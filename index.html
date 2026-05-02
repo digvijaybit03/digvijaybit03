@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Digvijay Upadhyay | Director of Quality Engineering</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0d1b2a;
+  --navy2: #1a2d42;
+  --blue: #1e5799;
+  --accent: #4fc3f7;
+  --gold: #f5c842;
+  --white: #f0f4f8;
+  --gray: #8ca0b3;
+  --card: rgba(30,50,75,0.55);
+  --border: rgba(79,195,247,0.18);
+  --glow: rgba(79,195,247,0.12);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--navy);
+  color: var(--white);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 400;
+  overflow-x: hidden;
+  cursor: default;
+}
+
+/* ── CUSTOM CURSOR ── */
+.cursor {
+  width: 12px; height: 12px;
+  background: var(--accent);
+  border-radius: 50%;
+  position: fixed; top: 0; left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  transition: transform 0.15s ease, opacity 0.2s;
+  mix-blend-mode: screen;
+}
+.cursor-ring {
+  width: 36px; height: 36px;
+  border: 1.5px solid var(--accent);
+  border-radius: 50%;
+  position: fixed; top: 0; left: 0;
+  pointer-events: none;
+  z-index: 9998;
+  opacity: 0.5;
+  transition: transform 0.35s cubic-bezier(.16,1,.3,1), width 0.2s, height 0.2s, opacity 0.2s;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 22px 60px;
+  display: flex; justify-content: space-between; align-items: center;
+  backdrop-filter: blur(18px);
+  background: rgba(13,27,42,0.75);
+  border-bottom: 1px solid var(--border);
+  transition: padding 0.3s;
+}
+.nav-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.02em;
+}
+.nav-links { display: flex; gap: 36px; list-style: none; }
+.nav-links a {
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gray);
+  text-decoration: none;
+  transition: color 0.2s;
+  position: relative;
+}
+.nav-links a::after {
+  content: '';
+  position: absolute; bottom: -4px; left: 0; right: 0;
+  height: 1px; background: var(--accent);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 0.25s;
+}
+.nav-links a:hover { color: var(--white); }
+.nav-links a:hover::after { transform: scaleX(1); }
+
+/* ── HERO ── */
+#hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 120px 60px 80px;
+  position: relative;
+  overflow: hidden;
+}
+.hero-bg {
+  position: absolute; inset: 0; pointer-events: none;
+  background:
+    radial-gradient(ellipse 70% 60% at 80% 30%, rgba(30,87,153,0.28) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 40% at 15% 80%, rgba(79,195,247,0.08) 0%, transparent 60%);
+}
+.hero-grid {
+  position: absolute; inset: 0; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(79,195,247,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(79,195,247,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%);
+}
+.hero-eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.78rem;
+  color: var(--accent);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 18px;
+  opacity: 0;
+  transform: translateY(16px);
+  animation: fadeUp 0.7s 0.2s forwards;
+}
+.hero-name {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(3rem, 7vw, 6.5rem);
+  font-weight: 900;
+  line-height: 1.0;
+  color: var(--white);
+  opacity: 0;
+  transform: translateY(24px);
+  animation: fadeUp 0.8s 0.4s forwards;
+}
+.hero-name span { color: var(--accent); }
+.hero-title {
+  font-size: clamp(1rem, 2vw, 1.35rem);
+  font-weight: 300;
+  color: var(--gray);
+  margin-top: 18px;
+  letter-spacing: 0.04em;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 0.8s 0.6s forwards;
+}
+.hero-title strong { color: var(--white); font-weight: 500; }
+.hero-summary {
+  max-width: 660px;
+  margin-top: 28px;
+  font-size: 1.05rem;
+  line-height: 1.75;
+  color: var(--gray);
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 0.8s 0.8s forwards;
+}
+.hero-cta {
+  margin-top: 42px;
+  display: flex; gap: 16px; flex-wrap: wrap;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 0.8s 1s forwards;
+}
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 13px 28px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.22s;
+  border: none;
+}
+.btn-primary {
+  background: var(--accent);
+  color: var(--navy);
+}
+.btn-primary:hover {
+  background: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(79,195,247,0.3);
+}
+.btn-outline {
+  background: transparent;
+  color: var(--accent);
+  border: 1.5px solid var(--accent);
+}
+.btn-outline:hover {
+  background: rgba(79,195,247,0.1);
+  transform: translateY(-2px);
+}
+.hero-stats {
+  position: absolute; right: 60px; bottom: 80px;
+  display: flex; gap: 48px;
+  opacity: 0;
+  animation: fadeUp 0.8s 1.2s forwards;
+}
+.stat-item { text-align: center; }
+.stat-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.8rem;
+  font-weight: 900;
+  color: var(--white);
+  line-height: 1;
+}
+.stat-num span { color: var(--accent); }
+.stat-label {
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gray);
+  margin-top: 6px;
+}
+
+/* ── SECTION COMMON ── */
+section { padding: 100px 60px; }
+.section-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 14px;
+}
+.section-line {
+  width: 56px; height: 3px;
+  background: linear-gradient(90deg, var(--accent), transparent);
+  margin-bottom: 50px;
+  border-radius: 2px;
+}
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.visible { opacity: 1; transform: none; }
+
+/* ── COMPETENCIES ── */
+#competencies { background: var(--navy2); }
+.comp-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+}
+.comp-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 22px 24px;
+  display: flex; align-items: flex-start; gap: 14px;
+  transition: transform 0.22s, border-color 0.22s, box-shadow 0.22s;
+  backdrop-filter: blur(8px);
+}
+.comp-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(79,195,247,0.4);
+  box-shadow: 0 12px 36px rgba(79,195,247,0.1);
+}
+.comp-icon {
+  width: 40px; height: 40px; min-width: 40px;
+  border-radius: 8px;
+  background: rgba(79,195,247,0.12);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem;
+}
+.comp-text { font-size: 0.9rem; font-weight: 500; color: var(--white); line-height: 1.4; }
+.comp-sub { font-size: 0.78rem; color: var(--gray); margin-top: 4px; font-weight: 400; }
+
+/* ── EXPERIENCE ── */
+#experience { background: var(--navy); }
+.timeline { position: relative; padding-left: 30px; }
+.timeline::before {
+  content: '';
+  position: absolute; left: 0; top: 8px; bottom: 8px;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--accent), rgba(79,195,247,0.1));
+}
+.exp-item {
+  position: relative;
+  margin-bottom: 56px;
+  padding-left: 28px;
+}
+.exp-item::before {
+  content: '';
+  position: absolute; left: -35px; top: 8px;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid var(--navy);
+  box-shadow: 0 0 0 3px rgba(79,195,247,0.2);
+}
+.exp-header {
+  display: flex; flex-wrap: wrap;
+  justify-content: space-between; align-items: flex-start;
+  gap: 8px; margin-bottom: 6px;
+}
+.exp-role {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--white);
+}
+.exp-company {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--accent);
+  margin-top: 2px;
+}
+.exp-dates {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.78rem;
+  color: var(--gray);
+  background: rgba(79,195,247,0.08);
+  padding: 4px 12px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  white-space: nowrap;
+}
+.exp-desc {
+  font-size: 0.9rem;
+  color: var(--gray);
+  line-height: 1.7;
+  margin: 10px 0 14px;
+  font-style: italic;
+}
+.exp-bullets { list-style: none; }
+.exp-bullets li {
+  font-size: 0.9rem;
+  color: #c5d8e8;
+  line-height: 1.65;
+  padding: 5px 0 5px 18px;
+  position: relative;
+}
+.exp-bullets li::before {
+  content: '▸';
+  position: absolute; left: 0;
+  color: var(--accent);
+  font-size: 0.8rem;
+}
+.exp-bullets li strong { color: var(--white); font-weight: 600; }
+.exp-tags { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 14px; }
+.tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  padding: 3px 10px;
+  border-radius: 3px;
+  background: rgba(79,195,247,0.08);
+  border: 1px solid rgba(79,195,247,0.2);
+  color: var(--accent);
+  letter-spacing: 0.05em;
+}
+
+/* ── AI FRAMEWORK HIGHLIGHT ── */
+#ai-framework {
+  background: linear-gradient(135deg, #0b1927 0%, #0d2340 50%, #0b1927 100%);
+  position: relative; overflow: hidden;
+}
+#ai-framework::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 60% 70% at 50% 50%, rgba(30,87,153,0.2) 0%, transparent 70%);
+}
+.framework-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 2px;
+  max-width: 860px;
+  margin: 0 auto;
+}
+.layer-card {
+  padding: 36px 28px;
+  background: var(--card);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+  text-align: center;
+  transition: transform 0.25s, box-shadow 0.25s;
+  position: relative;
+  overflow: hidden;
+}
+.layer-card:first-child { border-radius: 10px 0 0 10px; }
+.layer-card:last-child { border-radius: 0 10px 10px 0; }
+.layer-card:hover { transform: translateY(-6px); box-shadow: 0 16px 48px rgba(79,195,247,0.15); }
+.layer-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 3px;
+}
+.layer-card:nth-child(1)::before { background: linear-gradient(90deg, #4fc3f7, #1e88e5); }
+.layer-card:nth-child(2)::before { background: linear-gradient(90deg, #f5c842, #ff9800); }
+.layer-card:nth-child(3)::before { background: linear-gradient(90deg, #81c784, #43a047); }
+.layer-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 3rem;
+  font-weight: 900;
+  opacity: 0.1;
+  position: absolute; top: 10px; right: 16px;
+  color: var(--white);
+}
+.layer-icon { font-size: 2rem; margin-bottom: 12px; }
+.layer-title { font-size: 1rem; font-weight: 700; color: var(--white); margin-bottom: 8px; }
+.layer-desc { font-size: 0.82rem; color: var(--gray); line-height: 1.6; }
+
+/* ── SKILLS ── */
+#skills { background: var(--navy2); }
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 12px;
+}
+.skill-chip {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 13px 16px;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.78rem;
+  color: var(--accent);
+  text-align: center;
+  transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+  letter-spacing: 0.04em;
+}
+.skill-chip:hover {
+  background: rgba(79,195,247,0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(79,195,247,0.1);
+}
+
+/* ── EDUCATION ── */
+#education { background: var(--navy); }
+.edu-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 32px 36px;
+  max-width: 620px;
+  backdrop-filter: blur(8px);
+  display: flex; gap: 24px; align-items: flex-start;
+}
+.edu-icon {
+  width: 56px; height: 56px; min-width: 56px;
+  border-radius: 12px;
+  background: rgba(79,195,247,0.1);
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.6rem;
+}
+.edu-degree {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--white);
+}
+.edu-school { font-size: 0.9rem; color: var(--accent); margin-top: 4px; font-weight: 500; }
+.edu-year { font-size: 0.82rem; color: var(--gray); margin-top: 6px; font-family: 'DM Mono', monospace; }
+.edu-score {
+  display: inline-block;
+  margin-top: 10px;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.75rem;
+  padding: 3px 10px;
+  border-radius: 20px;
+  background: rgba(245,200,66,0.1);
+  border: 1px solid rgba(245,200,66,0.3);
+  color: var(--gold);
+}
+
+/* ── CONTACT ── */
+#contact {
+  background: linear-gradient(135deg, var(--navy2), #0f2236);
+  text-align: center;
+  position: relative; overflow: hidden;
+}
+#contact::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 50% 60% at 50% 100%, rgba(79,195,247,0.07) 0%, transparent 70%);
+}
+.contact-links { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 40px; }
+.contact-chip {
+  display: flex; align-items: center; gap: 10px;
+  padding: 14px 22px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--white);
+  text-decoration: none;
+  font-size: 0.88rem;
+  font-weight: 500;
+  transition: all 0.22s;
+  backdrop-filter: blur(8px);
+}
+.contact-chip:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(79,195,247,0.12);
+}
+.contact-chip span { font-size: 1.2rem; }
+
+/* ── FOOTER ── */
+footer {
+  background: #080f18;
+  padding: 28px 60px;
+  display: flex; justify-content: space-between; align-items: center;
+  border-top: 1px solid rgba(79,195,247,0.08);
+  font-size: 0.78rem;
+  color: var(--gray);
+  flex-wrap: wrap; gap: 10px;
+}
+.footer-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  color: var(--accent);
+}
+
+/* ── SCROLL PROGRESS ── */
+#progress {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--gold));
+  transform-origin: left;
+  transform: scaleX(0);
+  z-index: 200;
+  transition: transform 0.05s linear;
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  to { opacity: 1; transform: none; }
+}
+
+/* ── MOBILE ── */
+@media (max-width: 768px) {
+  nav { padding: 18px 24px; }
+  .nav-links { display: none; }
+  section { padding: 70px 24px; }
+  #hero { padding: 100px 24px 60px; }
+  .hero-stats { position: static; margin-top: 48px; gap: 28px; }
+  .framework-grid { grid-template-columns: 1fr; }
+  .layer-card:first-child { border-radius: 10px 10px 0 0; }
+  .layer-card:last-child { border-radius: 0 0 10px 10px; }
+  footer { padding: 24px; flex-direction: column; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursor-ring"></div>
+<div id="progress"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">DU</div>
+  <ul class="nav-links">
+    <li><a href="#competencies">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#ai-framework">AI Framework</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-eyebrow">// Quality Engineering Leader</div>
+  <h1 class="hero-name">Digvijay<br><span>Upadhyay</span></h1>
+  <p class="hero-title"><strong>Director of Quality Engineering</strong> &nbsp;·&nbsp; AI/GenAI QE Specialist &nbsp;·&nbsp; Pune, India</p>
+  <p class="hero-summary">Visionary Quality Engineering leader with 20+ years driving large-scale QA transformations across AI, SaaS, and cloud-native products. Pioneer of a three-layered GenAI quality metrics model and AI agent validation framework for Agentic Mesh workflows. Deep expertise in SIEM/SOAR, Big Data, and responsible AI practices.</p>
+  <div class="hero-cta">
+    <a href="#experience" class="btn btn-primary">View Experience</a>
+    <a href="#contact" class="btn btn-outline">Get In Touch</a>
+  </div>
+  <div class="hero-stats">
+    <div class="stat-item">
+      <div class="stat-num">20<span>+</span></div>
+      <div class="stat-label">Years of Experience</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">5<span>+</span></div>
+      <div class="stat-label">Companies Led</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">35<span>+</span></div>
+      <div class="stat-label">Team Size Managed</div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPETENCIES -->
+<section id="competencies">
+  <div class="reveal">
+    <div class="section-tag">// What I Do</div>
+    <h2 class="section-title">Core Competencies</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="comp-grid">
+    <div class="comp-card reveal">
+      <div class="comp-icon">🤖</div>
+      <div><div class="comp-text">AI/GenAI Quality Engineering</div><div class="comp-sub">LLM Evaluation & Hallucination Testing</div></div>
+    </div>
+    <div class="comp-card reveal">
+      <div class="comp-icon">🕸️</div>
+      <div><div class="comp-text">Agentic Workflow Validation</div><div class="comp-sub">AI Agent & Agentic Mesh Testing</div></div>
+    </div>
+    <div class="comp-card reveal">
+      <div class="comp-icon">⚙️</div>
+      <div><div class="comp-text">Test Automation Strategy</div><div class="comp-sub">Framework Design & CI/CD Integration</div></div>
+    </div>
+    <div class="comp-card reveal">
+      <div class="comp-icon">☁️</div>
+      <div><div class="comp-text">Cloud-Native QA</div><div class="comp-sub">AWS · Azure · GCP · Kubernetes</div></div>
+    </div>
+    <div class="comp-card reveal">
+      <div class="comp-icon">📊</div>
+      <div><div class="comp-text">Quality Governance & Metrics</div><div class="comp-sub">Dashboards, KPIs & Defect Analytics</div></div>
+    </div>
+    <div class="comp-card reveal">
+      <div class="comp-icon">👥</div>
+      <div><div class="comp-text">Engineering Leadership</div><div class="comp-sub">Team Building, Coaching & Org Design</div></div>
+    </div>
+    <div class="comp-card reveal">
+      <div class="comp-icon">🛡️</div>
+      <div><div class="comp-text">Big Data & Security QA</div><div class="comp-sub">SIEM/SOAR · Hadoop · Data Security</div></div>
+    </div>
+    <div class="comp-card reveal">
+      <div class="comp-icon">🚀</div>
+      <div><div class="comp-text">Shift-Left & Agile QA</div><div class="comp-sub">SaaS Delivery & Release Management</div></div>
+    </div>
+    <div class="comp-card reveal">
+      <div class="comp-icon">🔬</div>
+      <div><div class="comp-text">Performance & Security Testing</div><div class="comp-sub">NFT, Load, Pen Testing Leadership</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="reveal">
+    <div class="section-tag">// Career Journey</div>
+    <h2 class="section-title">Professional Experience</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="timeline">
+
+    <div class="exp-item reveal">
+      <div class="exp-header">
+        <div>
+          <div class="exp-role">Senior Manager, SDET — AI Quality Engineering</div>
+          <div class="exp-company">Securonix</div>
+        </div>
+        <div class="exp-dates">Mar 2022 – Present</div>
+      </div>
+      <p class="exp-desc">Leading AI/GenAI quality engineering for enterprise SIEM/SOAR platform with 500+ global customers. Spearheading QA strategy for AI-enabled agentic products and cloud SaaS operations.</p>
+      <ul class="exp-bullets">
+        <li><strong>AI Innovation:</strong> Designed and implemented a three-layered GenAI quality metrics model — Expected Answer Alignment, Structural & Safety Alignment, and Core Quality — improving LLM assessment accuracy by 40%+.</li>
+        <li><strong>Agentic Validation:</strong> Built end-to-end AI agent validation frameworks for all Agentic Mesh workflows: Search, Response, Policy, Insider Intent, Noise AI Insights, and Agentic Mesh agents.</li>
+        <li><strong>LLM Tooling:</strong> Evaluated and integrated TruLens, Promptfoo, and MCP to standardize prompt evaluation and hallucination detection pipelines.</li>
+        <li><strong>Quality Metrics:</strong> Maintained defect leakage below 8% across all managed product lines; achieved 100% test coverage for AI model validation.</li>
+        <li><strong>Cloud & DevOps:</strong> Optimized AWS infrastructure utilization, reducing cloud billing cost by 20%+. Managed QA, UAT, and Production deployments end-to-end.</li>
+      </ul>
+      <div class="exp-tags">
+        <span class="tag">GenAI</span><span class="tag">LLM Eval</span><span class="tag">Agentic Mesh</span>
+        <span class="tag">TruLens</span><span class="tag">Promptfoo</span><span class="tag">AWS</span><span class="tag">SIEM/SOAR</span>
+      </div>
+    </div>
+
+    <div class="exp-item reveal">
+      <div class="exp-header">
+        <div>
+          <div class="exp-role">Quality Engineering Manager</div>
+          <div class="exp-company">ConnectWise</div>
+        </div>
+        <div class="exp-dates">Nov 2019 – May 2021</div>
+      </div>
+      <p class="exp-desc">Led a 35-member QE organization across multiple Scrum teams for an RMM SaaS product on AWS microservices architecture.</p>
+      <ul class="exp-bullets">
+        <li><strong>CoE Leadership:</strong> Established Center of Excellence with quality streams covering SIT, NFT, and Automation Framework; drove 100% automation coverage via Jenkins CI.</li>
+        <li><strong>Observability:</strong> Launched synthetic monitoring initiative enabling 40% faster issue detection on production environment.</li>
+        <li><strong>Process Excellence:</strong> Championed Shift-Left testing adoption; implemented RCA process framework, reducing regression escape rate by 30%.</li>
+      </ul>
+      <div class="exp-tags">
+        <span class="tag">CoE</span><span class="tag">Shift-Left</span><span class="tag">Jenkins</span><span class="tag">AWS</span><span class="tag">SaaS</span>
+      </div>
+    </div>
+
+    <div class="exp-item reveal">
+      <div class="exp-header">
+        <div>
+          <div class="exp-role">Engineering Manager — Big Data QA</div>
+          <div class="exp-company">Protegrity India Pvt. Ltd.</div>
+        </div>
+        <div class="exp-dates">Jun 2021 – Feb 2022</div>
+      </div>
+      <p class="exp-desc">Engineering Manager & Product Owner for Big Data Cloud Integration team across Hadoop, AWS, Azure, and GCP ecosystems.</p>
+      <ul class="exp-bullets">
+        <li><strong>Product Ownership:</strong> Owned backlog and delivery roadmap for Big Data Protector across Cloudera, MapR, HortonWorks, AWS EMR, Azure HDInsight, and GCP Dataproc.</li>
+        <li><strong>Customer Delivery:</strong> Coordinated enterprise customer POCs and certifications; managed CI pipeline for all BigData builds.</li>
+      </ul>
+      <div class="exp-tags">
+        <span class="tag">Hadoop</span><span class="tag">AWS EMR</span><span class="tag">Azure</span><span class="tag">GCP</span><span class="tag">Product Owner</span>
+      </div>
+    </div>
+
+    <div class="exp-item reveal">
+      <div class="exp-header">
+        <div>
+          <div class="exp-role">QA Manager / SME — Big Data</div>
+          <div class="exp-company">Protegrity India Pvt. Ltd.</div>
+        </div>
+        <div class="exp-dates">Mar 2016 – Nov 2019</div>
+      </div>
+      <ul class="exp-bullets">
+        <li>Led a 12–15 member Big Data QA team across all Hadoop and cloud distributions; delivered quality dashboards covering release-wise defects and automation KPIs.</li>
+        <li>Acted as Product Owner and SME for Big Data Cloud Integration; coordinated with Professional Services and customers for POC delivery.</li>
+      </ul>
+      <div class="exp-tags">
+        <span class="tag">Big Data</span><span class="tag">Hadoop</span><span class="tag">Data Security</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- AI FRAMEWORK HIGHLIGHT -->
+<section id="ai-framework">
+  <div style="position:relative; z-index:1;">
+    <div class="reveal" style="text-align:center; margin-bottom: 50px;">
+      <div class="section-tag" style="justify-content:center; display:flex;">// Proprietary Innovation</div>
+      <h2 class="section-title">Three-Layered GenAI Quality Metrics Model</h2>
+      <p style="color:var(--gray); max-width:600px; margin:0 auto; font-size:0.95rem; line-height:1.75;">A pioneering framework designed at Securonix for evaluating and benchmarking Large Language Models in enterprise security contexts.</p>
+    </div>
+    <div class="framework-grid reveal">
+      <div class="layer-card">
+        <div class="layer-num">1</div>
+        <div class="layer-icon">🎯</div>
+        <div class="layer-title">Expected Answer Alignment</div>
+        <div class="layer-desc">Measures how accurately the LLM output aligns with ground-truth expected answers across SIEM threat detection scenarios.</div>
+      </div>
+      <div class="layer-card">
+        <div class="layer-num">2</div>
+        <div class="layer-icon">🛡️</div>
+        <div class="layer-title">Structural & Safety Alignment</div>
+        <div class="layer-desc">Validates structural integrity of responses, detects hallucinations, assesses bias, and ensures responsible AI output in security contexts.</div>
+      </div>
+      <div class="layer-card">
+        <div class="layer-num">3</div>
+        <div class="layer-icon">⭐</div>
+        <div class="layer-title">Core Quality</div>
+        <div class="layer-desc">End-to-end quality measurement including coherence, relevance, completeness, and production-readiness benchmarking.</div>
+      </div>
+    </div>
+    <div class="reveal" style="text-align:center; margin-top: 40px;">
+      <p style="font-family:'DM Mono', monospace; font-size:0.78rem; color:var(--gray); letter-spacing:0.1em;">AGENTIC VALIDATION COVERAGE &nbsp;·&nbsp; SEARCH &nbsp;·&nbsp; RESPONSE &nbsp;·&nbsp; POLICY &nbsp;·&nbsp; INSIDER INTENT &nbsp;·&nbsp; NOISE AI INSIGHTS &nbsp;·&nbsp; AGENTIC MESH</p>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="reveal">
+    <div class="section-tag">// Tech Stack</div>
+    <h2 class="section-title">Technologies & Tools</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="skills-grid reveal">
+    <div class="skill-chip">Python</div>
+    <div class="skill-chip">PyTest</div>
+    <div class="skill-chip">Selenium</div>
+    <div class="skill-chip">Jenkins</div>
+    <div class="skill-chip">AWS Bedrock</div>
+    <div class="skill-chip">AWS EMR / S3</div>
+    <div class="skill-chip">Azure HDInsight</div>
+    <div class="skill-chip">GCP Dataproc</div>
+    <div class="skill-chip">Kubernetes</div>
+    <div class="skill-chip">Docker</div>
+    <div class="skill-chip">TruLens</div>
+    <div class="skill-chip">Promptfoo</div>
+    <div class="skill-chip">MCP Protocol</div>
+    <div class="skill-chip">Hadoop / Hive</div>
+    <div class="skill-chip">Apache Spark</div>
+    <div class="skill-chip">HBase</div>
+    <div class="skill-chip">JIRA / Confluence</div>
+    <div class="skill-chip">Postman</div>
+    <div class="skill-chip">REST API Testing</div>
+    <div class="skill-chip">LLM Eval APIs</div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="reveal">
+    <div class="section-tag">// Academic Background</div>
+    <h2 class="section-title">Education</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="edu-card reveal">
+    <div class="edu-icon">🎓</div>
+    <div>
+      <div class="edu-degree">M.Sc. Information Science</div>
+      <div class="edu-school">Birla Institute of Technology, Mesra</div>
+      <div class="edu-year">2005</div>
+      <div class="edu-score">Score: 79.8%</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div style="position:relative; z-index:1;">
+    <div class="reveal">
+      <div class="section-tag" style="justify-content:center; display:flex;">// Let's Connect</div>
+      <h2 class="section-title" style="text-align:center;">Open to Director QE Roles</h2>
+      <p style="color:var(--gray); text-align:center; max-width:500px; margin:0 auto; font-size:0.95rem; line-height:1.75;">Currently targeting Director of Quality Engineering roles at product-based SaaS & AI-first companies. Let's talk about how I can drive your quality engineering vision forward.</p>
+    </div>
+    <div class="contact-links reveal">
+      <a class="contact-chip" href="mailto:digvijaybit03@gmail.com">
+        <span>✉️</span> digvijaybit03@gmail.com
+      </a>
+      <a class="contact-chip" href="tel:+919878891737">
+        <span>📱</span> +91 98788 91737
+      </a>
+      <a class="contact-chip" href="https://linkedin.com/in/digvijayupadhyay" target="_blank">
+        <span>💼</span> LinkedIn Profile
+      </a>
+      <a class="contact-chip" href="#">
+        <span>📄</span> Download Resume
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-name">Digvijay Upadhyay</div>
+  <div>Director of Quality Engineering &nbsp;·&nbsp; Pune, India</div>
+  <div>Built for GitHub Pages · 2025</div>
+</footer>
+
+<script>
+// ── CURSOR ──
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursor-ring');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.transform = `translate(${mx - 6}px, ${my - 6}px)`;
+});
+function animateRing() {
+  rx += (mx - rx - 18) * 0.12;
+  ry += (my - ry - 18) * 0.12;
+  ring.style.transform = `translate(${rx}px, ${ry}px)`;
+  requestAnimationFrame(animateRing);
+}
+animateRing();
+document.querySelectorAll('a, button, .comp-card, .skill-chip').forEach(el => {
+  el.addEventListener('mouseenter', () => { ring.style.width = ring.style.height = '56px'; ring.style.opacity = '0.8'; ring.style.marginLeft = ring.style.marginTop = '-10px'; });
+  el.addEventListener('mouseleave', () => { ring.style.width = ring.style.height = '36px'; ring.style.opacity = '0.5'; ring.style.marginLeft = ring.style.marginTop = '0px'; });
+});
+
+// ── SCROLL PROGRESS ──
+const progress = document.getElementById('progress');
+window.addEventListener('scroll', () => {
+  const s = document.documentElement.scrollTop;
+  const h = document.documentElement.scrollHeight - window.innerHeight;
+  progress.style.transform = `scaleX(${s / h})`;
+});
+
+// ── REVEAL ON SCROLL ──
+const observer = new IntersectionObserver(entries => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('visible'), i * 80);
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ── NAV SHRINK ──
+window.addEventListener('scroll', () => {
+  document.querySelector('nav').style.padding = window.scrollY > 60 ? '14px 60px' : '22px 60px';
+});
+</script>
+</body>
+</html>
